@@ -1,0 +1,68 @@
+DROP DATABASE IF EXISTS quan_ly_don_dat_hang;
+CREATE DATABASE quan_ly_don_dat_hang;
+USE quan_ly_don_dat_hang;
+
+CREATE TABLE DonViKhach (
+    MaDV VARCHAR(20) PRIMARY KEY,
+    TenDV VARCHAR(100) NOT NULL,
+    DiaChi VARCHAR(255),
+    DienThoai VARCHAR(20)
+);
+
+CREATE TABLE NguoiDat (
+    MaSoND VARCHAR(20) PRIMARY KEY,
+    HoTenND VARCHAR(100) NOT NULL,
+    MaDV VARCHAR(20),
+    FOREIGN KEY (MaDV) REFERENCES DonViKhach(MaDV)
+);
+
+CREATE TABLE Hang (
+    MaHang VARCHAR(20) PRIMARY KEY,
+    TenHang VARCHAR(100) NOT NULL,
+    DvTinh VARCHAR(20),
+    MotaHang TEXT
+);
+
+CREATE TABLE NoiGiao (
+    MaSoDDG VARCHAR(20) PRIMARY KEY,
+    TenNoiGiao VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE NguoiNhan (
+    MaSoNN VARCHAR(20) PRIMARY KEY,
+    HoTenNN VARCHAR(100) NOT NULL,
+    MaDV VARCHAR(20),
+    FOREIGN KEY (MaDV) REFERENCES DonViKhach(MaDV)
+);
+
+CREATE TABLE NguoiGiao (
+    MaSoNG VARCHAR(20) PRIMARY KEY,
+    HoTenNG VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE DatHang (
+    SoDH VARCHAR(20),
+    MaSoND VARCHAR(20),
+    MaHang VARCHAR(20),
+    NgayDat DATE,
+    SoLuong INT,
+    PRIMARY KEY (SoDH, MaHang),
+    FOREIGN KEY (MaSoND) REFERENCES NguoiDat(MaSoND),
+    FOREIGN KEY (MaHang) REFERENCES Hang(MaHang)
+);
+
+CREATE TABLE GiaoHang (
+    SoPG VARCHAR(20),
+    MaSoNG VARCHAR(20),
+    MaSoNN VARCHAR(20),
+    MaSoDDG VARCHAR(20),
+    MaHang VARCHAR(20),
+    NgayGiao DATE,
+    SoLuong INT,
+    DonGia DECIMAL(10, 2),
+    ThanhTien DECIMAL(12, 2),
+    PRIMARY KEY (SoPG, MaHang),
+    FOREIGN KEY (MaSoNG) REFERENCES NguoiGiao(MaSoNG),
+    FOREIGN KEY (MaSoNN) REFERENCES NguoiNhan(MaSoNN),
+    FOREIGN KEY (MaSoDDG) REFERENCES NoiGiao(MaSoDDG),
+    FOREIGN KEY (MaHang) REFERENCES Hang(MaHang)
